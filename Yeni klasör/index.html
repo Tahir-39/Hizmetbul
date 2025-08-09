@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Hizmetbul - Hizmet Marketplace</title>
+    <meta name="description" content="Türkiye'nin en güvenilir hizmet marketplace platformu. Hizmet arayanlar ve verenleri buluşturan güvenli platform.">
+    <meta name="keywords" content="hizmet, marketplace, temizlik, elektrikçi, boyacı, nakliye, teknisyen, güvenli ödeme">
+    <meta name="author" content="Hizmetbul Teknoloji A.Ş.">
+    
+    <!-- Google Sign-In -->
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id" content="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Hizmetbul">
+    <meta name="mobile-web-app-capable" content="yes">
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Icons -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="assets/icons/icon-192x192.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="assets/icons/icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="assets/icons/icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="128x128" href="assets/icons/icon-128x128.png">
+    <link rel="apple-touch-icon" sizes="96x96" href="assets/icons/icon-96x96.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="assets/icons/icon-72x72.png">
+    
+    <!-- Splash Screens -->
+    <link rel="apple-touch-startup-image" href="assets/splash/splash-320x568.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)">
+    <link rel="apple-touch-startup-image" href="assets/splash/splash-768x1024.png" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Hizmetbul - Hizmet Marketplace">
+    <meta property="og:description" content="Türkiye'nin en güvenilir hizmet marketplace platformu">
+    <meta property="og:image" content="assets/og-image.png">
+    <meta property="og:url" content="https://hizmetbul.com">
+    <meta property="og:site_name" content="Hizmetbul">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Hizmetbul - Hizmet Marketplace">
+    <meta name="twitter:description" content="Türkiye'nin en güvenilir hizmet marketplace platformu">
+    <meta name="twitter:image" content="assets/twitter-image.png">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <h1><i class="fas fa-handshake"></i> 🤝 Hizmetbul</h1>
+            </div>
+            
+            <!-- Mobile Menu Toggle -->
+            <div class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </div>
+            
+            <div class="nav-links" id="navLinks">
+                <a href="#services" onclick="closeMobileMenu()">Hizmetler</a>
+                <a href="#how-it-works" onclick="closeMobileMenu()">Nasıl Çalışır</a>
+                <a href="#about" onclick="closeMobileMenu()">Hakkımızda</a>
+                <button class="btn-login" onclick="showLoginModal(); closeMobileMenu()">Giriş Yap</button>
+                <button class="btn-register" onclick="showRegisterModal(); closeMobileMenu()">Kayıt Ol</button>
+                <button class="btn-admin" onclick="showAdminPanel(); closeMobileMenu()" style="display: none;">🔧 Admin</button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>🏠 Hizmet Arayan ve Veren Buluşuyor 🤝</h1>
+            <p>🇹🇷 Türkiye'nin en güvenilir hizmet marketplace'i. İhtiyacınız olan hizmeti bulun veya hizmetinizi sunun. ✨</p>
+            <div class="hero-buttons">
+                <button class="btn-primary" onclick="showServiceSearch()"><i class="fas fa-search"></i> 🔍 Hizmet Ara</button>
+                <button class="btn-secondary" onclick="showServiceOffer()"><i class="fas fa-briefcase"></i> 💼 Hizmet Ver</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search Section -->
+    <section id="search-section" class="search-section" style="display: none;">
+        <div class="container">
+            <h2>🔍 Hangi Hizmeti Arıyorsunuz? 🤔</h2>
+            <div class="search-form">
+                <input type="text" id="service-search" placeholder="🛠️ Hizmet türü girin (örn: temizlik, elektrikçi, boyacı)">
+                <input type="text" id="location-search" placeholder="📍 Şehir seçin">
+                <button class="btn-search" onclick="searchServices()">
+                    <i class="fas fa-search"></i> 🚀 Ara
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Service Categories -->
+    <section id="services" class="categories">
+        <div class="container">
+            <h2>🌟 Popüler Hizmet Kategorileri</h2>
+            <div class="category-grid">
+                <div class="category-card" onclick="selectCategory('temizlik')">
+                    <i class="fas fa-broom"></i>
+                    <h3>🧹 Temizlik</h3>
+                    <p>🏠 Ev, ofis, derin temizlik ✨</p>
+                </div>
+                <div class="category-card" onclick="selectCategory('elektrik')">
+                    <i class="fas fa-bolt"></i>
+                    <h3>⚡ Elektrik</h3>
+                    <p>🔌 Elektrik tesisatı, arıza 🔧</p>
+                </div>
+                <div class="category-card" onclick="selectCategory('boyaci')">
+                    <i class="fas fa-paint-roller"></i>
+                    <h3>🎨 Boyacı</h3>
+                    <p>🖌️ İç-dış boyama işleri 🏡</p>
+                </div>
+                <div class="category-card" onclick="selectCategory('nakliye')">
+                    <i class="fas fa-truck"></i>
+                    <h3>🚚 Nakliye</h3>
+                    <p>📦 Ev-ofis taşıma 🏢</p>
+                </div>
+                <div class="category-card" onclick="selectCategory('bahce')">
+                    <i class="fas fa-leaf"></i>
+                    <h3>🌿 Bahçe</h3>
+                    <p>🌱 Bahçe düzenleme, bakım 🌺</p>
+                </div>
+                <div class="category-card" onclick="selectCategory('teknisyen')">
+                    <i class="fas fa-wrench"></i>
+                    <h3>🔧 Teknisyen</h3>
+                    <p>⚙️ Beyaz eşya tamiri 🛠️</p>
+                </div>
+                <div class="category-card" onclick="selectCategory('egitim')">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h3>🎓 Eğitim</h3>
+                    <p>📚 Özel ders, kurs, coaching 👨‍🏫</p>
+                </div>
+                <div class="category-card" onclick="selectCategory('saglik')">
+                    <i class="fas fa-heart-pulse"></i>
+                    <h3>🏥 Sağlık & Bakım</h3>
+                    <p>💉 Hasta bakım, fizyoterapi 👩‍⚕️</p>
+                </div>
+                <div class="category-card" onclick="selectCategory('guzellik')">
+                    <i class="fas fa-cut"></i>
+                    <h3>💄 Güzellik</h3>
+                    <p>💇‍♀️ Kuaför, makyaj, masaj 💅</p>
+                </div>
+                <div class="category-card" onclick="selectCategory('cocuk')">
+                    <i class="fas fa-baby"></i>
+                    <h3>👶 Çocuk Bakımı</h3>
+                    <p>🍼 Bebek bakıcısı, oyun 🧸</p>
+                </div>
+                <div class="category-card" onclick="selectCategory('hayvan')">
+                    <i class="fas fa-paw"></i>
+                    <h3>🐕 Hayvan Bakımı</h3>
+                    <p>🐱 Pet bakım, veteriner 🦴</p>
+                </div>
+                <div class="category-card" onclick="selectCategory('spor')">
+                    <i class="fas fa-dumbbell"></i>
+                    <h3>🏋️ Spor & Fitness</h3>
+                    <p>💪 Personal trainer, yoga 🧘‍♀️</p>
+                </div>
+                <div class="category-card" onclick="selectCategory('etkinlik')">
+                    <i class="fas fa-calendar-alt"></i>
+                    <h3>🎉 Etkinlik</h3>
+                    <p>🎂 Organizasyon, fotoğraf 📷</p>
+                </div>
+                <div class="category-card" onclick="selectCategory('tamirat')">
+                    <i class="fas fa-hammer"></i>
+                    <h3>🔨 Tamirat</h3>
+                    <p>🪚 Marangoz, tesisatçı 🔧</p>
+                </div>
+                <div class="category-card" onclick="selectCategory('mutfak')">
+                    <i class="fas fa-utensils"></i>
+                    <h3>👨‍🍳 Mutfak</h3>
+                    <p>🍽️ Aşçı, catering, pasta 🎂</p>
+                </div>
+                <div class="category-card" onclick="selectCategory('teknoloji')">
+                    <i class="fas fa-laptop"></i>
+                    <h3>💻 Teknoloji</h3>
+                    <p>🖥️ Bilgisayar tamiri, kurulum 📱</p>
+                </div>
+                <div class="category-card" onclick="selectCategory('hukuk')">
+                    <i class="fas fa-balance-scale"></i>
+                    <h3>⚖️ Hukuk & Danışmanlık</h3>
+                    <p>📋 Avukat, noter, muhasebe 💼</p>
+                </div>
+                <div class="category-card" onclick="selectCategory('ekipman')">
+                    <i class="fas fa-tools"></i>
+                    <h3>🏗️ Ekipman Kiralama</h3>
+                    <p>🚧 Forklift, vinç, iş makinesi 🚜</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="how-it-works" class="how-it-works">
+        <div class="container">
+            <h2>❓ Nasıl Çalışır? 🎯</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1️⃣</div>
+                    <h3>📝 Kayıt Ol</h3>
+                    <p>👤 Hizmet arayan veya veren olarak platforma kayıt olun ✅</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2️⃣</div>
+                    <h3>🔍 Hizmet Bul/Ver</h3>
+                    <p>🛠️ İhtiyacınız olan hizmeti arayın veya hizmetinizi listeleyin 📋</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3️⃣</div>
+                    <h3>🤝 Anlaşma Yap</h3>
+                    <p>🔒 Güvenli platform üzerinden anlaşma yapın 💼</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4️⃣</div>
+                    <h3>💰 Ödeme Al/Ver</h3>
+                    <p>✅ İş tamamlandıktan sonra güvenli ödeme sistemi 💳</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('loginModal')">&times;</span>
+            <h2>🔐 Giriş Yap</h2>
+            <form id="loginForm">
+                <input type="email" placeholder="📧 E-posta" required>
+                <input type="password" placeholder="🔒 Şifre" required>
+                <button type="submit" class="btn-primary"><i class="fas fa-sign-in-alt"></i> 🚀 Giriş Yap</button>
+            </form>
+            <p>Hesabınız yok mu? <a href="#" onclick="showRegisterModal()">✨ Kayıt olun</a></p>
+            <div class="or-separator">
+                <span>VEYA</span>
+            </div>
+            <button class="btn-google" onclick="loginWithGoogle()">
+                <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google logo">
+                Google ile Giriş Yap
+            </button>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('registerModal')">&times;</span>
+            <h2>📝 Kayıt Ol</h2>
+            <form id="registerForm">
+                <select required>
+                    <option value="">👤 Kullanıcı Tipi Seçin</option>
+                    <option value="customer">🔍 Hizmet Arayan</option>
+                    <option value="provider">🛠️ Hizmet Veren</option>
+                </select>
+                <input type="text" placeholder="👤 Ad Soyad" required>
+                <input type="email" placeholder="📧 E-posta" required>
+                <input type="tel" placeholder="📱 Telefon" required>
+                <input type="password" placeholder="🔒 Şifre" required>
+                <button type="submit" class="btn-primary"><i class="fas fa-user-plus"></i> 🎉 Kayıt Ol</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>📖 Hizmetbul Hakkında</h2>
+                    <p>🇹🇷 Türkiye'nin en güvenilir hizmet marketplace platformu olan Hizmetbul, 2025 yılında hayata geçirilen yenilikçi bir projedir. 🎯 Amacımız, kaliteli hizmet arayanlar ile deneyimli hizmet verenleri güvenli bir ortamda buluşturmaktır. ✨</p>
+                    
+                    <div class="about-features">
+                        <div class="feature">
+                            <i class="fas fa-shield-alt"></i>
+                            <h3>🛡️ Güvenli Platform</h3>
+                            <p>✅ Tüm hizmet verenlerin kimlik ve referans kontrolü yapılır 🔍</p>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-star"></i>
+                            <h3>⭐ Kalite Garantisi</h3>
+                            <p>😊 Müşteri memnuniyeti odaklı değerlendirme sistemi 📊</p>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <h3>💰 Adil Komisyon</h3>
+                            <p>🎯 Sadece %5 komisyon ile ekonomik çözümler 💳</p>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-clock"></i>
+                            <h3>⏰ 7/24 Destek</h3>
+                            <p>🤝 Her zaman yanınızda olan müşteri hizmetleri 📞</p>
+                        </div>
+                    </div>
+
+                    <div class="stats">
+                        <div class="stat">
+                            <h3>👥 1,500+</h3>
+                            <p>🛠️ Aktif Hizmet Veren</p>
+                        </div>
+                        <div class="stat">
+                            <h3>✅ 25,000+</h3>
+                            <p>🎯 Tamamlanan İş</p>
+                        </div>
+                        <div class="stat">
+                            <h3>⭐ 4.8/5</h3>
+                            <p>😊 Müşteri Memnuniyeti</p>
+                        </div>
+                        <div class="stat">
+                            <h3>🗺️ 81</h3>
+                            <p>🏙️ İl Kapsamı</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <img src="https://via.placeholder.com/500x400?text=Hizmetbul+Ekibi" alt="Hizmetbul Ekibi">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <h2>🚀 Platform Özellikleri</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-heart"></i>
+                    <h3>❤️ Favoriler</h3>
+                    <p>⭐ Beğendiğiniz hizmetleri kaydedin ve kolayca erişin 📌</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-comments"></i>
+                    <h3>💬 Anlık Mesajlaşma</h3>
+                    <p>🗨️ Hizmet verenlerle direkt iletişim kurun 📱</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h3>📍 Konum Tabanlı</h3>
+                    <p>🗺️ Size en yakın hizmet verenleri bulun 🚀</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-camera"></i>
+                    <h3>📸 Fotoğraf Galerisi</h3>
+                    <p>🖼️ Hizmetlerin öncesi ve sonrası fotoğrafları ✨</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-filter"></i>
+                    <h3>🔍 Gelişmiş Filtreleme</h3>
+                    <p>💰 Fiyat, konum, puan gibi kriterlere göre arama 🎯</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-mobile-alt"></i>
+                    <h3>📱 Mobil Uyumlu</h3>
+                    <p>💻 Her cihazda mükemmel deneyim 🌟</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-main">
+                    <p>© 2025 🤝 Hizmetbul. 🇹🇷 Tüm hakları saklıdır. ✨ Made with ❤️ in Turkey</p>
+                </div>
+                <div class="footer-legal">
+                    <a href="#" onclick="showModal('termsModal')">📋 Kullanım Şartları</a>
+                    <a href="#" onclick="showModal('privacyModal')">🔒 Gizlilik Politikası</a>
+                    <a href="#" onclick="showModal('kvkkModal')">🛡️ KVKK Aydınlatma</a>
+                    <a href="#" onclick="showModal('disclaimerModal')">⚠️ Sorumluluk Reddi</a>
+                    <a href="#" onclick="showModal('cookieModal')">🍪 Çerez Politikası</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Legal Modals -->
+    
+    <!-- Terms of Service Modal -->
+    <div id="termsModal" class="modal legal-modal">
+        <div class="modal-content legal-content">
+            <span class="close" onclick="closeModal('termsModal')">&times;</span>
+            <h2>📋 Kullanım Şartları ve Koşulları</h2>
+            <div class="legal-text">
+                <h3>🏢 1. Şirket Bilgileri</h3>
+                <p><strong>Hizmetbul Teknoloji A.Ş.</strong><br>
+                Mersis No: 123456789012345<br>
+                Vergi Dairesi: İstanbul Vergi Dairesi<br>
+                Vergi No: 1234567890<br>
+                Adres: Örnek Mah. Teknoloji Cd. No:123 Şişli/İSTANBUL<br>
+                📞 Telefon: 0212 XXX XX XX<br>
+                📧 E-posta: bilgi@hizmetbul.com</p>
+
+                <h3>🎯 2. Platform Amacı</h3>
+                <p>Hizmetbul, hizmet arayanlar ile hizmet verenleri buluşturan aracı bir platformdur. Platform kendisi hizmet vermez, sadece tarafları buluşturur.</p>
+
+                <h3>💰 3. Komisyon ve Ödeme</h3>
+                <p>• Platform komisyonu: Tamamlanan her işlemden %5<br>
+                • Ödemeler güvenli ödeme sistemleri ile yapılır<br>
+                • Komisyon, ödeme alındıktan sonra tahsil edilir<br>
+                • Fatura düzenlemek zorunludur</p>
+
+                <h3>📝 4. Kullanıcı Yükümlülükleri</h3>
+                <p>• Gerçek ve doğru bilgi verme zorunluluğu<br>
+                • Profesyonel davranış sergileme<br>
+                • Platform kurallarına uyma<br>
+                • Yasal mevzuata uygun hareket etme</p>
+
+                <h3>⚠️5. Yasaklı Faaliyetler</h3>
+                <p>• Yasadışı hizmetler sunmak<br>
+                • Sahte kimlik kullanmak<br>
+                • Platform dışı ödeme yapmak/almak<br>
+                • Hakaret ve tehdit içeren davranışlar</p>
+
+                <h3>🛡️ 6. Sorumluluk Sınırı</h3>
+                <p>Platform aracılık hizmeti sunar. Hizmet kalitesi, zamanında teslimat ve ödeme güvenliği hizmet verenlerin sorumluluğundadır.</p>
+
+                <h3>⚖️ 7. İhtilaf Çözümü</h3>
+                <p>İhtilaflar önce platform üzerinden çözülmeye çalışılır. Çözülemezse İstanbul Mahkemeleri yetkilidir.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Privacy Policy Modal -->
+    <div id="privacyModal" class="modal legal-modal">
+        <div class="modal-content legal-content">
+            <span class="close" onclick="closeModal('privacyModal')">&times;</span>
+            <h2>🔒 Gizlilik Politikası</h2>
+            <div class="legal-text">
+                <h3>📊 1. Toplanan Veriler</h3>
+                <p>• Kişisel kimlik bilgileri (ad, soyad, TC No)<br>
+                • İletişim bilgileri (telefon, e-posta, adres)<br>
+                • Finansal bilgiler (banka hesabı, ödeme bilgileri)<br>
+                • Platform kullanım verileri<br>
+                • Konum bilgileri (hizmet alanı için)</p>
+
+                <h3>🎯 2. Verilerin Kullanım Amacı</h3>
+                <p>• Hizmet eşleştirme ve platform işleyişi<br>
+                • Kimlik doğrulama ve güvenlik<br>
+                • Ödeme işlemleri<br>
+                • Müşteri hizmetleri<br>
+                • Yasal yükümlülükler</p>
+
+                <h3>🔐 3. Veri Güvenliği</h3>
+                <p>• SSL şifreleme teknolojisi<br>
+                • Güvenli sunucu altyapısı<br>
+                • Düzenli güvenlik denetimleri<br>
+                • Yetki bazlı erişim kontrolü</p>
+
+                <h3>📤 4. Veri Paylaşımı</h3>
+                <p>• Sadece hizmet eşleştirme amacıyla<br>
+                • Yasal zorunluluklar halinde<br>
+                • Kullanıcı rızası ile<br>
+                • Anonim istatistiksel veriler</p>
+
+                <h3>⏱️ 5. Veri Saklama Süresi</h3>
+                <p>• Aktif kullanıcılar: Hesap silinene kadar<br>
+                • Pasif kullanıcılar: 3 yıl<br>
+                • Finansal kayıtlar: 10 yıl (UVK gereği)<br>
+                • Log kayıtları: 2 yıl</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- KVKK Modal -->
+    <div id="kvkkModal" class="modal legal-modal">
+        <div class="modal-content legal-content">
+            <span class="close" onclick="closeModal('kvkkModal')">&times;</span>
+            <h2>🛡️ KVKK Aydınlatma Metni</h2>
+            <div class="legal-text">
+                <h3>🏛️ Veri Sorumlusu</h3>
+                <p><strong>Hizmetbul Teknoloji A.Ş.</strong><br>
+                6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK") kapsamında veri sorumlusudur.</p>
+
+                <h3>📋 Kişisel Veri Kategorileri</h3>
+                <p>• <strong>Kimlik Verisi:</strong> Ad, soyad, TC kimlik no, doğum tarihi<br>
+                • <strong>İletişim Verisi:</strong> Telefon, e-posta, adres<br>
+                • <strong>Müşteri İşlem Verisi:</strong> Sipariş geçmişi, ödeme bilgileri<br>
+                • <strong>Pazarlama Verisi:</strong> Tercihler, ilgi alanları<br>
+                • <strong>Teknik Veri:</strong> IP adresi, çerez bilgileri</p>
+
+                <h3>⚖️ İşleme Amaçları ve Hukuki Dayanaklar</h3>
+                <p>• <strong>Sözleşme İfası:</strong> Platform hizmetlerinin sunulması<br>
+                • <strong>Hukuki Yükümlülük:</strong> Vergi, ticaret mevzuatı<br>
+                • <strong>Meşru Menfaat:</strong> Platform güvenliği, dolandırıcılık önleme<br>
+                • <strong>Açık Rıza:</strong> Pazarlama faaliyetleri</p>
+
+                <h3>🔍 KVKK Hakları</h3>
+                <p>• Kişisel verilerinizin işlenip işlenmediğini öğrenme<br>
+                • İşlenme amacını ve amacına uygun kullanılıp kullanılmadığını öğrenme<br>
+                • Aktarıldığı üçüncü kişileri bilme<br>
+                • Eksik/yanlış verilerin düzeltilmesini isteme<br>
+                • Verilerin silinmesini/yok edilmesini isteme<br>
+                • İşleme karşı itiraz etme</p>
+
+                <h3>📧 Başvuru Yolları</h3>
+                <p>KVKK haklarınızı kullanmak için:<br>
+                📧 E-posta: kvkk@hizmetbul.com<br>
+                📮 Posta: KVKK Başvuru, Örnek Mah. Teknoloji Cd. No:123 Şişli/İSTANBUL<br>
+                🌐 Online: www.hizmetbul.com/kvkk-basvuru</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Disclaimer Modal -->
+    <div id="disclaimerModal" class="modal legal-modal">
+        <div class="modal-content legal-content">
+            <span class="close" onclick="closeModal('disclaimerModal')">&times;</span>
+            <h2>⚠️ Sorumluluk Reddi</h2>
+            <div class="legal-text">
+                <h3>🎭 Platform Rolü</h3>
+                <p>Hizmetbul, hizmet arayanlar ile hizmet verenleri buluşturan aracı bir platformdur. Platform kendisi hizmet sağlayıcı değildir.</p>
+
+                <h3>❌ Sorumluluk Alanı Dışındakiler</h3>
+                <p>• Hizmet kalitesi ve standartları<br>
+                • Hizmet verenlerin profesyonelliği<br>
+                • Zamanında teslimat<br>
+                • İş kazaları ve hasarlar<br>
+                • Hizmet verenlerle müşteriler arası ihtilaflar<br>
+                • Üçüncü taraf ödeme sistemlerindeki sorunlar</p>
+
+                <h3>✅ Platform Sorumlulukları</h3>
+                <p>• Güvenli platform altyapısı sağlama<br>
+                • Kimlik doğrulama sistemleri<br>
+                • Şikayet ve ihtilaf çözüm mekanizması<br>
+                • Kullanıcı verilerinin güvenliği<br>
+                • Yasal mevzuata uygunluk</p>
+
+                <h3>🔍 Kullanıcı Sorumlulukları</h3>
+                <p>• Hizmet veren seçiminde özen gösterme<br>
+                • Referansları kontrol etme<br>
+                • Güvenlik önlemlerini alma<br>
+                • Platform kurallarına uyma<br>
+                • Doğru bilgi paylaşma</p>
+
+                <h3>⚖️ Hukuki Uyarı</h3>
+                <p>Bu platform Türkiye Cumhuriyeti kanunlarına tabidir. Hizmet verenlerin gerekli ruhsat ve belgelere sahip olması gerekmektedir.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cookie Policy Modal -->
+    <div id="cookieModal" class="modal legal-modal">
+        <div class="modal-content legal-content">
+            <span class="close" onclick="closeModal('cookieModal')">&times;</span>
+            <h2>🍪 Çerez Politikası</h2>
+            <div class="legal-text">
+                <h3>🔍 Çerez Nedir?</h3>
+                <p>Çerezler, web sitelerini ziyaret ettiğinizde cihazınızda saklanan küçük metin dosyalarıdır. Bu dosyalar site deneyiminizi iyileştirmek için kullanılır.</p>
+
+                <h3>📊 Kullanılan Çerez Türleri</h3>
+                <p><strong>• Zorunlu Çerezler:</strong> Platform işleyişi için gerekli<br>
+                <strong>• Performans Çerezleri:</strong> Site hızı ve performans analizi<br>
+                <strong>• Fonksiyonel Çerezler:</strong> Kullanıcı tercihlerini hatırlama<br>
+                <strong>• Pazarlama Çerezleri:</strong> Kişiselleştirilmiş reklamlar</p>
+
+                <h3>🎯 Kullanım Amaçları</h3>
+                <p>• Giriş durumunu hatırlama<br>
+                • Dil ve para birimi tercihleri<br>
+                • Sepet içeriğini koruma<br>
+                • Site kullanım istatistikleri<br>
+                • Güvenlik önlemleri<br>
+                • Kişiselleştirilmiş içerik sunma</p>
+
+                <h3>⚙️ Çerez Yönetimi</h3>
+                <p>Tarayıcı ayarlarından çerezleri yönetebilirsiniz:<br>
+                • Chrome: Ayarlar > Gizlilik ve Güvenlik > Çerezler<br>
+                • Firefox: Ayarlar > Gizlilik ve Güvenlik<br>
+                • Safari: Tercihler > Gizlilik<br>
+                • Edge: Ayarlar > Çerezler ve site izinleri</p>
+
+                <h3>⚠️ Önemli Uyarı</h3>
+                <p>Zorunlu çerezleri devre dışı bırakırsanız platform düzgün çalışmayabilir. Diğer çerezleri istediğiniz zaman yönetebilirsiniz.</p>
+
+                <h3>🔄 Güncelleme</h3>
+                <p>Bu çerez politikası düzenli olarak gözden geçirilir ve güncellenebilir. Değişiklikler sitede duyurulacaktır.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cookie Consent Banner -->
+    <div id="cookieBanner" class="cookie-banner">
+        <div class="cookie-content">
+            <div class="cookie-text">
+                <h3>🍪 Çerez Kullanımı</h3>
+                <p>Daha iyi hizmet sunabilmek için çerezler kullanıyoruz. Detaylar için <a href="#" onclick="showModal('cookieModal')">çerez politikamızı</a> inceleyebilirsiniz.</p>
+            </div>
+            <div class="cookie-buttons">
+                <button class="btn-cookie-accept" onclick="acceptCookies()">✅ Kabul Et</button>
+                <button class="btn-cookie-settings" onclick="showModal('cookieModal')">⚙️ Ayarlar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Panel Modal -->
+    <div id="adminModal" class="modal admin-modal">
+        <div class="modal-content admin-content">
+            <span class="close" onclick="closeModal('adminModal')">&times;</span>
+            <h2>🔧 Yönetici Paneli</h2>
+            
+            <!-- Admin Tabs -->
+            <div class="admin-tabs">
+                <button class="tab-btn active" onclick="showAdminTab('dashboard')">📊 Dashboard</button>
+                <button class="tab-btn" onclick="showAdminTab('users')">👥 Kullanıcılar</button>
+                <button class="tab-btn" onclick="showAdminTab('services')">🛠️ Hizmetler</button>
+                <button class="tab-btn" onclick="showAdminTab('transactions')">💰 İşlemler</button>
+                <button class="tab-btn" onclick="showAdminTab('reports')">📈 Raporlar</button>
+                <button class="tab-btn" onclick="showAdminTab('settings')">⚙️ Ayarlar</button>
+            </div>
+
+            <!-- Dashboard Tab -->
+            <div id="admin-dashboard" class="admin-tab active">
+                <h3>📊 Platform İstatistikleri</h3>
+                <div class="admin-stats">
+                    <div class="stat-card">
+                        <h4>👥 Toplam Kullanıcı</h4>
+                        <p class="stat-number" id="totalUsers">2,847</p>
+                        <span class="stat-change positive">+12% bu ay</span>
+                    </div>
+                    <div class="stat-card">
+                        <h4>🛠️ Aktif Hizmetler</h4>
+                        <p class="stat-number" id="activeServices">1,256</p>
+                        <span class="stat-change positive">+8% bu ay</span>
+                    </div>
+                    <div class="stat-card">
+                        <h4>💰 Aylık Gelir</h4>
+                        <p class="stat-number" id="monthlyRevenue">₺125,430</p>
+                        <span class="stat-change positive">+15% bu ay</span>
+                    </div>
+                    <div class="stat-card">
+                        <h4>📝 Bekleyen Onaylar</h4>
+                        <p class="stat-number" id="pendingApprovals">23</p>
+                        <span class="stat-change negative">-5% bu ay</span>
+                    </div>
+                </div>
+
+                <div class="admin-charts">
+                    <div class="chart-container">
+                        <h4>📈 Son 7 Günlük Aktivite</h4>
+                        <canvas id="activityChart" width="400" height="200"></canvas>
+                    </div>
+                    <div class="recent-activities">
+                        <h4>🔔 Son Aktiviteler</h4>
+                        <div class="activity-list" id="recentActivities">
+                            <div class="activity-item">
+                                <span class="activity-time">5 dk önce</span>
+                                <span class="activity-text">Yeni kullanıcı kayıt oldu: Ahmet K.</span>
+                            </div>
+                            <div class="activity-item">
+                                <span class="activity-time">12 dk önce</span>
+                                <span class="activity-text">Hizmet onaylandı: Ev Temizliği</span>
+                            </div>
+                            <div class="activity-item">
+                                <span class="activity-time">25 dk önce</span>
+                                <span class="activity-text">Ödeme tamamlandı: ₺250</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Users Tab -->
+            <div id="admin-users" class="admin-tab">
+                <h3>👥 Kullanıcı Yönetimi</h3>
+                <div class="admin-controls">
+                    <input type="text" id="userSearch" placeholder="🔍 Kullanıcı ara..." onkeyup="filterUsers()">
+                    <select id="userTypeFilter" onchange="filterUsers()">
+                        <option value="">Tüm Tipler</option>
+                        <option value="customer">Müşteriler</option>
+                        <option value="provider">Hizmet Verenler</option>
+                        <option value="admin">Yöneticiler</option>
+                    </select>
+                    <button class="btn-primary" onclick="showAddUserModal()">➕ Yeni Kullanıcı</button>
+                </div>
+                
+                <div class="users-table-container">
+                    <table class="admin-table" id="usersTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Ad Soyad</th>
+                                <th>E-posta</th>
+                                <th>Tip</th>
+                                <th>Kayıt Tarihi</th>
+                                <th>Durum</th>
+                                <th>İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            <!-- Users will be populated via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Services Tab -->
+            <div id="admin-services" class="admin-tab">
+                <h3>🛠️ Hizmet Yönetimi</h3>
+                <div class="admin-controls">
+                    <input type="text" id="serviceSearch" placeholder="🔍 Hizmet ara..." onkeyup="filterServices()">
+                    <select id="serviceStatusFilter" onchange="filterServices()">
+                        <option value="">Tüm Durumlar</option>
+                        <option value="active">Aktif</option>
+                        <option value="pending">Beklemede</option>
+                        <option value="rejected">Reddedilen</option>
+                        <option value="suspended">Askıya Alınan</option>
+                    </select>
+                    <select id="serviceCategoryFilter" onchange="filterServices()">
+                        <option value="">Tüm Kategoriler</option>
+                        <option value="temizlik">Temizlik</option>
+                        <option value="elektrik">Elektrik</option>
+                        <option value="nakliye">Nakliye</option>
+                    </select>
+                </div>
+                
+                <div class="services-table-container">
+                    <table class="admin-table" id="servicesTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Hizmet Adı</th>
+                                <th>Kategori</th>
+                                <th>Sağlayıcı</th>
+                                <th>Fiyat</th>
+                                <th>Puan</th>
+                                <th>Durum</th>
+                                <th>İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody id="servicesTableBody">
+                            <!-- Services will be populated via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Transactions Tab -->
+            <div id="admin-transactions" class="admin-tab">
+                <h3>💰 İşlem Yönetimi</h3>
+                <div class="admin-controls">
+                    <input type="date" id="transactionDateFrom" onchange="filterTransactions()">
+                    <input type="date" id="transactionDateTo" onchange="filterTransactions()">
+                    <select id="transactionStatusFilter" onchange="filterTransactions()">
+                        <option value="">Tüm Durumlar</option>
+                        <option value="completed">Tamamlandı</option>
+                        <option value="pending">Beklemede</option>
+                        <option value="failed">Başarısız</option>
+                        <option value="refunded">İade Edildi</option>
+                    </select>
+                    <button class="btn-secondary" onclick="exportTransactions()">📊 Excel'e Aktar</button>
+                </div>
+                
+                <div class="transactions-summary">
+                    <div class="summary-card">
+                        <h4>💰 Toplam Ciro</h4>
+                        <p id="totalRevenue">₺1,234,567</p>
+                    </div>
+                    <div class="summary-card">
+                        <h4>🏦 Platform Komisyonu</h4>
+                        <p id="totalCommission">₺61,728</p>
+                    </div>
+                    <div class="summary-card">
+                        <h4>📊 İşlem Sayısı</h4>
+                        <p id="totalTransactions">8,456</p>
+                    </div>
+                </div>
+                
+                <div class="transactions-table-container">
+                    <table class="admin-table" id="transactionsTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Tarih</th>
+                                <th>Hizmet</th>
+                                <th>Müşteri</th>
+                                <th>Sağlayıcı</th>
+                                <th>Tutar</th>
+                                <th>Komisyon</th>
+                                <th>Durum</th>
+                                <th>İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transactionsTableBody">
+                            <!-- Transactions will be populated via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Reports Tab -->
+            <div id="admin-reports" class="admin-tab">
+                <h3>📈 Raporlar ve Analizler</h3>
+                <div class="reports-section">
+                    <div class="report-cards">
+                        <div class="report-card" onclick="generateReport('revenue')">
+                            <i class="fas fa-chart-line"></i>
+                            <h4>💰 Gelir Raporu</h4>
+                            <p>Aylık, haftalık gelir analizi</p>
+                        </div>
+                        <div class="report-card" onclick="generateReport('users')">
+                            <i class="fas fa-users"></i>
+                            <h4>👥 Kullanıcı Raporu</h4>
+                            <p>Kullanıcı büyüme ve aktivite</p>
+                        </div>
+                        <div class="report-card" onclick="generateReport('services')">
+                            <i class="fas fa-cogs"></i>
+                            <h4>🛠️ Hizmet Raporu</h4>
+                            <p>Popüler hizmetler ve kategoriler</p>
+                        </div>
+                        <div class="report-card" onclick="generateReport('performance')">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <h4>⚡ Performans Raporu</h4>
+                            <p>Platform performansı ve hızı</p>
+                        </div>
+                    </div>
+
+                    <div class="report-filters">
+                        <h4>📅 Rapor Filtreleri</h4>
+                        <div class="filter-row">
+                            <label>Tarih Aralığı:</label>
+                            <input type="date" id="reportDateFrom">
+                            <input type="date" id="reportDateTo">
+                        </div>
+                        <div class="filter-row">
+                            <label>Rapor Tipi:</label>
+                            <select id="reportType">
+                                <option value="summary">Özet</option>
+                                <option value="detailed">Detaylı</option>
+                                <option value="comparison">Karşılaştırmalı</option>
+                            </select>
+                        </div>
+                        <button class="btn-primary" onclick="generateCustomReport()">📊 Rapor Oluştur</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div id="admin-settings" class="admin-tab">
+                <h3>⚙️ Platform Ayarları</h3>
+                <div class="settings-sections">
+                    <div class="settings-section">
+                        <h4>💰 Komisyon Ayarları</h4>
+                        <div class="setting-item">
+                            <label>Standart Komisyon Oranı (%):</label>
+                            <input type="number" id="standardCommission" value="5" min="0" max="20">
+                        </div>
+                        <div class="setting-item">
+                            <label>Premium Komisyon Oranı (%):</label>
+                            <input type="number" id="premiumCommission" value="3" min="0" max="20">
+                        </div>
+                        <div class="setting-item">
+                            <label>Minimum İşlem Tutarı (₺):</label>
+                            <input type="number" id="minTransaction" value="50" min="0">
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <h4>🔒 Güvenlik Ayarları</h4>
+                        <div class="setting-item">
+                            <label>Maksimum Günlük İşlem Tutarı (₺):</label>
+                            <input type="number" id="maxDailyTransaction" value="10000" min="0">
+                        </div>
+                        <div class="setting-item">
+                            <label>Otomatik Kullanıcı Doğrulama:</label>
+                            <input type="checkbox" id="autoVerification" checked>
+                        </div>
+                        <div class="setting-item">
+                            <label>İçerik Moderasyon Seviyesi:</label>
+                            <select id="moderationLevel">
+                                <option value="low">Düşük</option>
+                                <option value="medium" selected>Orta</option>
+                                <option value="high">Yüksek</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <h4>📧 Bildirim Ayarları</h4>
+                        <div class="setting-item">
+                            <label>Yeni Kullanıcı Bildirimi:</label>
+                            <input type="checkbox" id="newUserNotification" checked>
+                        </div>
+                        <div class="setting-item">
+                            <label>İşlem Bildirimi:</label>
+                            <input type="checkbox" id="transactionNotification" checked>
+                        </div>
+                        <div class="setting-item">
+                            <label>Sorun Bildirimi:</label>
+                            <input type="checkbox" id="issueNotification" checked>
+                        </div>
+                    </div>
+
+                    <div class="settings-actions">
+                        <button class="btn-primary" onclick="saveSettings()">💾 Ayarları Kaydet</button>
+                        <button class="btn-secondary" onclick="resetSettings()">🔄 Varsayılana Dön</button>
+                        <button class="btn-danger" onclick="exportSettings()">📤 Ayarları Dışa Aktar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Admin Login Modal -->
+    <div id="adminLoginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('adminLoginModal')">&times;</span>
+            <h2>🔐 Yönetici Girişi</h2>
+            <form id="adminLoginForm">
+                <input type="text" placeholder="👤 Admin Kullanıcı Adı" required>
+                <input type="password" placeholder="🔒 Admin Şifresi" required>
+                <div class="admin-hint">
+                    <p><strong>Demo Giriş Bilgileri:</strong></p>
+                    <p>👤 Kullanıcı Adı: <code>admin</code></p>
+                    <p>🔒 Şifre: <code>admin123</code></p>
+                </div>
+                <button type="submit" class="btn-primary"><i class="fas fa-sign-in-alt"></i> 🚀 Admin Girişi</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
